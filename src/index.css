@@ -1,0 +1,242 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --background: 40 33% 98%;
+    --foreground: 30 10% 15%;
+
+    --card: 40 40% 99%;
+    --card-foreground: 30 10% 15%;
+
+    --popover: 40 40% 99%;
+    --popover-foreground: 30 10% 15%;
+
+    --primary: 43 74% 49%;
+    --primary-foreground: 40 33% 98%;
+
+    --secondary: 40 30% 94%;
+    --secondary-foreground: 30 10% 20%;
+
+    --muted: 40 20% 92%;
+    --muted-foreground: 30 10% 45%;
+
+    --accent: 43 74% 49%;
+    --accent-foreground: 40 33% 98%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 40 33% 98%;
+
+    --border: 40 20% 88%;
+    --input: 40 20% 88%;
+    --ring: 43 74% 49%;
+
+    --radius: 0.5rem;
+
+    /* Custom hotel theme colors */
+    --gold: 43 74% 49%;
+    --gold-light: 43 60% 70%;
+    --gold-dark: 43 74% 35%;
+    --ivory: 40 40% 97%;
+    --charcoal: 30 10% 15%;
+    --charcoal-light: 30 10% 25%;
+    --warm-white: 40 33% 98%;
+    --cream: 40 30% 94%;
+
+    /* Gradients */
+    --gradient-gold: linear-gradient(135deg, hsl(43 74% 49%) 0%, hsl(35 80% 45%) 100%);
+    --gradient-dark: linear-gradient(180deg, hsl(30 10% 10%) 0%, hsl(30 10% 20%) 100%);
+    --gradient-overlay: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%);
+
+    /* Shadows */
+    --shadow-soft: 0 4px 20px -4px hsl(30 10% 15% / 0.1);
+    --shadow-medium: 0 8px 30px -8px hsl(30 10% 15% / 0.15);
+    --shadow-gold: 0 4px 20px -4px hsl(43 74% 49% / 0.3);
+
+    --sidebar-background: 40 33% 98%;
+    --sidebar-foreground: 30 10% 25%;
+    --sidebar-primary: 43 74% 49%;
+    --sidebar-primary-foreground: 40 33% 98%;
+    --sidebar-accent: 40 30% 94%;
+    --sidebar-accent-foreground: 30 10% 20%;
+    --sidebar-border: 40 20% 88%;
+    --sidebar-ring: 43 74% 49%;
+  }
+
+  .dark {
+    --background: 30 10% 10%;
+    --foreground: 40 33% 98%;
+
+    --card: 30 10% 12%;
+    --card-foreground: 40 33% 98%;
+
+    --popover: 30 10% 12%;
+    --popover-foreground: 40 33% 98%;
+
+    --primary: 43 74% 55%;
+    --primary-foreground: 30 10% 10%;
+
+    --secondary: 30 10% 18%;
+    --secondary-foreground: 40 33% 98%;
+
+    --muted: 30 10% 20%;
+    --muted-foreground: 40 20% 65%;
+
+    --accent: 43 74% 55%;
+    --accent-foreground: 30 10% 10%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 40 33% 98%;
+
+    --border: 30 10% 20%;
+    --input: 30 10% 20%;
+    --ring: 43 74% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+  }
+}
+
+@layer components {
+  .hotel-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+
+  .gold-text {
+    @apply text-primary;
+  }
+
+  .gold-border {
+    @apply border-primary;
+  }
+
+  .elegant-shadow {
+    box-shadow: var(--shadow-soft);
+  }
+
+  .elegant-shadow-hover {
+    box-shadow: var(--shadow-medium);
+  }
+
+  .gold-glow {
+    box-shadow: var(--shadow-gold);
+  }
+
+  .text-gradient-gold {
+    background: var(--gradient-gold);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-gradient-overlay {
+    background: var(--gradient-overlay);
+  }
+
+  .nav-link {
+    @apply relative inline-block text-foreground/80 hover:text-primary transition-colors duration-300;
+  }
+
+  .nav-link::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-full h-0.5 bg-primary origin-bottom-right scale-x-0 transition-transform duration-300;
+  }
+
+  .nav-link:hover::after {
+    @apply origin-bottom-left scale-x-100;
+  }
+
+  .btn-primary {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300 font-medium;
+  }
+
+  .btn-outline-gold {
+    @apply border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 font-medium;
+  }
+
+  .card-hover {
+    @apply transition-all duration-500 hover:-translate-y-2;
+  }
+
+  .card-hover:hover {
+    box-shadow: var(--shadow-medium);
+  }
+
+  .image-zoom {
+    @apply overflow-hidden;
+  }
+
+  .image-zoom img {
+    @apply transition-transform duration-700 hover:scale-110;
+  }
+}
+
+@layer utilities {
+  .animate-fade-up {
+    animation: fadeUp 0.6s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  .animate-slide-in {
+    animation: slideIn 0.5s ease-out forwards;
+  }
+
+  @keyframes fadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+}
