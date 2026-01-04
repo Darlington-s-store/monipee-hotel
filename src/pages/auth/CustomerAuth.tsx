@@ -25,7 +25,7 @@ const CustomerAuth = () => {
 
   // Login form state
   const [loginData, setLoginData] = useState({ email: '', password: '' });
-  
+
   // Register form state
   const [registerData, setRegisterData] = useState({
     name: '',
@@ -40,7 +40,7 @@ const CustomerAuth = () => {
     setIsLoading(true);
 
     const result = await login(loginData.email, loginData.password);
-    
+
     if (result.success) {
       toast({ title: 'Welcome back!', description: 'You have successfully logged in.' });
       if (redirectTo) {
@@ -62,7 +62,7 @@ const CustomerAuth = () => {
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (registerData.password !== registerData.confirmPassword) {
       toast({ title: 'Error', description: 'Passwords do not match', variant: 'destructive' });
       return;
@@ -233,11 +233,7 @@ const CustomerAuth = () => {
               </TabsContent>
             </Tabs>
 
-            <div className="mt-6 text-center text-sm text-muted-foreground">
-              <Link to="/admin/login" className="hover:text-primary underline">
-                Admin Login
-              </Link>
-            </div>
+
           </CardContent>
         </Card>
       </div>

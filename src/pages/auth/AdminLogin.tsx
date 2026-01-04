@@ -22,12 +22,12 @@ const AdminLogin = () => {
     setIsLoading(true);
 
     const result = await login(formData.email, formData.password);
-    
+
     if (result.success) {
       // Check if user is admin
       const users = JSON.parse(localStorage.getItem('monipee_users') || '[]') as Array<User & { password?: string }>;
       const user = users.find((u) => u.email === formData.email);
-      
+
       if (user?.role === 'admin') {
         toast({ title: 'Welcome Admin!', description: 'You have successfully logged in.' });
         navigate('/admin');
@@ -100,13 +100,7 @@ const AdminLogin = () => {
               </Button>
             </form>
 
-            <div className="mt-6 p-4 bg-slate-700/30 rounded-lg">
-              <p className="text-xs text-slate-400 text-center">
-                Default credentials:<br />
-                Email: admin@monipee.com<br />
-                Password: admin123
-              </p>
-            </div>
+
 
             <div className="mt-4 text-center text-sm">
               <Link to="/auth" className="text-slate-400 hover:text-primary underline">
