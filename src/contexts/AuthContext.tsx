@@ -9,73 +9,15 @@ import {
   RoomReview,
   HeroSection,
   PageContent,
-  HotelSettings
+  HotelSettings,
+  AuthContextType
 } from '@/types/auth';
 
 
 
 
 
-interface AuthContextType {
-  user: User | null;
-  isLoading: boolean;
-  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
-  register: (data: { email: string; password: string; name: string; phone?: string }) => Promise<{ success: boolean; error?: string }>;
-  logout: () => void;
-  updateProfile: (data: Partial<User>) => Promise<{ success: boolean; error?: string }>;
-  // Booking functions
-  getBookings: () => Booking[];
-  addBooking: (booking: Omit<Booking, 'id' | 'createdAt'>) => Booking;
-  updateBooking: (id: string, data: Partial<Booking>) => void;
-  getAllBookings: () => Booking[];
-  // Message functions
-  getMessages: () => Message[];
-  addMessage: (message: Omit<Message, 'id' | 'createdAt' | 'status'>) => Message;
-  getAllMessages: () => Message[];
-  updateMessage: (id: string, data: Partial<Message>) => void;
-  // User functions (admin)
-  getAllUsers: () => User[];
-  // Room functions
-  rooms: Room[];
-  getRooms: () => Room[];
-  addRoom: (room: Room) => void;
-  updateRoom: (id: string, data: Partial<Room>) => void;
-  deleteRoom: (id: string) => void;
-  // Gallery functions
-  galleryImages: GalleryImage[];
-  addGalleryImage: (image: Omit<GalleryImage, 'id'>) => void;
-  deleteGalleryImage: (id: string) => void;
 
-  // Reviews functions
-  reviews: Review[];
-  addReview: (review: Omit<Review, 'id'>) => void;
-  updateReview: (id: string, data: Partial<Omit<Review, 'id'>>) => void;
-  deleteReview: (id: string) => void;
-
-  // Room review functions
-  getRoomReviews: (roomId: string) => RoomReview[];
-  addRoomReview: (roomId: string, data: { rating: number; comment: string }) => { success: boolean; error?: string };
-  getAllRoomReviews: () => RoomReview[];
-  updateRoomReviewStatus: (reviewId: string, status: RoomReview['status']) => void;
-
-  // Hero section functions
-  heroSections: HeroSection[];
-  getHeroSection: (id: string) => HeroSection;
-  updateHeroSection: (id: string, data: Partial<Omit<HeroSection, 'id'>>) => void;
-
-  // Page content functions
-  pageContents: PageContent[];
-  getPageContent: (id: string) => PageContent;
-  updatePageContent: (id: string, data: Partial<Omit<PageContent, 'id'>>) => void;
-
-  // Settings
-  settings: HotelSettings;
-  updateSettings: (data: Partial<HotelSettings>) => void;
-
-  // Password Reset
-  forgotPassword: (email: string) => Promise<{ success: boolean; message: string }>;
-  resetPassword: (password: string, token: string, email: string) => Promise<{ success: boolean; message: string }>;
-}
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -344,7 +286,7 @@ const DEFAULT_ADMIN: User & { password: string } = {
   createdAt: new Date().toISOString(),
 };
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -921,7 +863,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useAuth = () => {
+export function useAuth() {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
