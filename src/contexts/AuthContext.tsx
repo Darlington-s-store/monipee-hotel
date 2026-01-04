@@ -1,203 +1,20 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import {
+  User,
+  Booking,
+  Room,
+  Message,
+  GalleryImage,
+  Review,
+  RoomReview,
+  HeroSection,
+  PageContent,
+  HotelSettings
+} from '@/types/auth';
 
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-  phone?: string;
-  role: 'customer' | 'admin';
-  createdAt: string;
-}
 
-export interface Booking {
-  id: string;
-  userId: string;
-  roomType: string;
-  roomName: string;
-  checkIn: string;
-  checkOut: string;
-  guests: number;
-  totalPrice: number;
-  status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
-  createdAt: string;
-  guestDetails: {
-    firstName: string;
-    lastName: string;
-    email: string;
-    phone: string;
-    specialRequests?: string;
-  };
-}
 
-export interface Room {
-  id: string;
-  name: string;
-  type: string;
-  price: number;
-  capacity: number;
-  amenities: string[];
-  description: string;
-  image: string;
-  available: boolean;
-  size?: string;
-  images?: Array<{
-    name: string;
-    size: number;
-    type: string;
-    dataUrl: string;
-  }>;
-}
 
-export interface Message {
-  id: string;
-  userId: string;
-  subject: string;
-  content: string;
-  status: 'unread' | 'read' | 'replied';
-  createdAt: string;
-  replies?: {
-    content: string;
-    createdAt: string;
-    isAdmin: boolean;
-  }[];
-}
-
-export interface GalleryImage {
-  id: string;
-  category: string;
-  src: string;
-  alt: string;
-}
-
-export interface Review {
-  id: string;
-  name: string;
-  date: string;
-  rating: number;
-  comment: string;
-  status: 'published' | 'pending' | 'hidden';
-}
-
-export interface RoomReview {
-  id: string;
-  roomId: string;
-  userId: string;
-  userName: string;
-  rating: number;
-  comment: string;
-  createdAt: string;
-  status: 'pending' | 'approved' | 'rejected';
-}
-
-const DEFAULT_REVIEWS: Review[] = [
-  {
-    id: 'review-matilda-tsagli',
-    name: 'Matilda Tsagli',
-    date: 'December 2024',
-    rating: 4,
-    comment:
-      'The roads leading to Monipee has deteriorated. It’s dusty and have potholes. If it’s fixed, Monipee will be a hit. Some of the locks on the door need replaced and the door leading to our room also needs maintained.',
-    status: 'published',
-  },
-  {
-    id: 'review-richard-bellson',
-    name: 'Richard Bellson',
-    date: '2 years ago',
-    rating: 5,
-    comment:
-      'Monipee Hotel stands out as one of the best accommodations in Obuasi. The serene environment creates a pleasant atmosphere for guests, while the security measures provide peace of mind.',
-    status: 'published',
-  },
-  {
-    id: 'review-gideon-ofori',
-    name: 'Gideon Ofori',
-    date: '2 years ago',
-    rating: 4,
-    comment:
-      "Great place... a little far out from the Obuasi township. Good thing is there's a police post at their entrance at night. So good security.",
-    status: 'published',
-  },
-  {
-    id: 'review-abena-kesewaa',
-    name: 'Abena Kesewaa',
-    date: '7 years ago',
-    rating: 5,
-    comment:
-      'Serene environment, clean rooms, and well kept washrooms. Highly professional staff. My all time favorite hotel in Obuasi right now.',
-    status: 'published',
-  },
-  {
-    id: 'review-emmanuel-nyarko',
-    name: 'Emmanuel Nyarko',
-    date: '2 years ago',
-    rating: 4,
-    comment: "Good environment to enjoy your holidays and they've a nice swimming pool to also enjoy yourself.",
-    status: 'published',
-  },
-  {
-    id: 'review-charles-akyeampong',
-    name: 'Charles Akyeampong',
-    date: 'a year ago',
-    rating: 1,
-    comment:
-      'Outwards looks good with flowers and beautiful plants garden. Reception staff ok, the area is not serene. The rooms are not well kept. Water dampness is an issue on the walls and makes the rooms stuffy. Washroom maintenance and tidiness is an issue.',
-    status: 'published',
-  },
-  {
-    id: 'review-alycea-shirley',
-    name: 'Alycea Shirley',
-    date: '3 years ago',
-    rating: 1,
-    comment:
-      'This had to be my worst experience at a hotel in Ghana. The place is very beautiful when you enter, but looks are definitely deceiving. There is a serious water issue; the water comes out yellow a lot of the time.',
-    status: 'published',
-  },
-  {
-    id: 'review-see-the-world',
-    name: 'See the World',
-    date: '5 years ago',
-    rating: 3,
-    comment:
-      'Sad to give this hotel 3 stars but I have to. The landscape is immaculate; receptionist, caterers, and cleaners are amazing; food is awesome. But there are maintenance issues.',
-    status: 'published',
-  },
-  {
-    id: 'review-sylvester-mawuli-abudu',
-    name: 'Sylvester Mawuli Abudu',
-    date: '6 years ago',
-    rating: 5,
-    comment: 'Monipee is a great place and a very beautiful environment. I love to hang out there. Good reception and great service.',
-    status: 'published',
-  },
-];
-
-export interface HeroSection {
-  id: string;
-  backgroundImage: string;
-  label: string;
-  title: string;
-  subtitle: string;
-}
-
-export interface PageContent {
-  id: string;
-  images: Record<string, string>;
-  content: Record<string, string>;
-}
-
-export interface HotelSettings {
-  hotelName: string;
-  email: string;
-  phone: string;
-  address: string;
-  checkInTime: string;
-  checkOutTime: string;
-  currency: string;
-  taxRate: number;
-  enableBookings: boolean;
-  enableReviews: boolean;
-  maintenanceMode: boolean;
-}
 
 interface AuthContextType {
   user: User | null;
@@ -355,6 +172,88 @@ const DEFAULT_PAGE_CONTENTS: PageContent[] = [
       hero: '',
     },
     content: {},
+  },
+];
+
+const DEFAULT_REVIEWS: Review[] = [
+  {
+    id: 'review-matilda-tsagli',
+    name: 'Matilda Tsagli',
+    date: 'December 2024',
+    rating: 4,
+    comment:
+      'The roads leading to Monipee has deteriorated. It’s dusty and have potholes. If it’s fixed, Monipee will be a hit. Some of the locks on the door need replaced and the door leading to our room also needs maintained.',
+    status: 'published',
+  },
+  {
+    id: 'review-richard-bellson',
+    name: 'Richard Bellson',
+    date: '2 years ago',
+    rating: 5,
+    comment:
+      'Monipee Hotel stands out as one of the best accommodations in Obuasi. The serene environment creates a pleasant atmosphere for guests, while the security measures provide peace of mind.',
+    status: 'published',
+  },
+  {
+    id: 'review-gideon-ofori',
+    name: 'Gideon Ofori',
+    date: '2 years ago',
+    rating: 4,
+    comment:
+      "Great place... a little far out from the Obuasi township. Good thing is there's a police post at their entrance at night. So good security.",
+    status: 'published',
+  },
+  {
+    id: 'review-abena-kesewaa',
+    name: 'Abena Kesewaa',
+    date: '7 years ago',
+    rating: 5,
+    comment:
+      'Serene environment, clean rooms, and well kept washrooms. Highly professional staff. My all time favorite hotel in Obuasi right now.',
+    status: 'published',
+  },
+  {
+    id: 'review-emmanuel-nyarko',
+    name: 'Emmanuel Nyarko',
+    date: '2 years ago',
+    rating: 4,
+    comment: "Good environment to enjoy your holidays and they've a nice swimming pool to also enjoy yourself.",
+    status: 'published',
+  },
+  {
+    id: 'review-charles-akyeampong',
+    name: 'Charles Akyeampong',
+    date: 'a year ago',
+    rating: 1,
+    comment:
+      'Outwards looks good with flowers and beautiful plants garden. Reception staff ok, the area is not serene. The rooms are not well kept. Water dampness is an issue on the walls and makes the rooms stuffy. Washroom maintenance and tidiness is an issue.',
+    status: 'published',
+  },
+  {
+    id: 'review-alycea-shirley',
+    name: 'Alycea Shirley',
+    date: '3 years ago',
+    rating: 1,
+    comment:
+      'This had to be my worst experience at a hotel in Ghana. The place is very beautiful when you enter, but looks are definitely deceiving. There is a serious water issue; the water comes out yellow a lot of the time.',
+    status: 'published',
+  },
+  {
+    id: 'review-see-the-world',
+    name: 'See the World',
+    date: '5 years ago',
+    rating: 3,
+    comment:
+      'Sad to give this hotel 3 stars but I have to. The landscape is immaculate; receptionist, caterers, and cleaners are amazing; food is awesome. But there are maintenance issues.',
+    status: 'published',
+  },
+  {
+    id: 'review-sylvester-mawuli-abudu',
+    name: 'Sylvester Mawuli Abudu',
+    date: '6 years ago',
+    rating: 5,
+    comment: 'Monipee is a great place and a very beautiful environment. I love to hang out there. Good reception and great service.',
+    status: 'published',
   },
 ];
 

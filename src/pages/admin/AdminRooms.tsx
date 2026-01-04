@@ -21,14 +21,15 @@ import {
 } from '@/components/ui/table';
 import { useToast } from '@/hooks/use-toast';
 import { Users, Edit, Plus, Trash2, Calendar, Check } from 'lucide-react';
-import { useAuth, Room, Booking } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { Room, Booking } from '@/types/auth';
 import { format } from 'date-fns';
 
 const AdminRooms = () => {
   const { toast } = useToast();
   const { rooms, updateRoom, deleteRoom, getAllBookings, updateBooking } = useAuth();
   const navigate = useNavigate();
-  
+
   // Calculate booking stats for a room
   const getRoomStats = (roomId: string, roomName: string) => {
     const allBookings = getAllBookings();
@@ -84,10 +85,10 @@ const AdminRooms = () => {
 
   const handleApproveBooking = (bookingId: string) => {
     updateBooking(bookingId, { status: 'confirmed' });
-    
+
     // Update local state to reflect change immediately in the dialog
     if (selectedRoomBookings) {
-      const updatedBookings = selectedRoomBookings.bookings.map(b => 
+      const updatedBookings = selectedRoomBookings.bookings.map(b =>
         b.id === bookingId ? { ...b, status: 'confirmed' as const } : b
       );
       setSelectedRoomBookings({ ...selectedRoomBookings, bookings: updatedBookings });
@@ -127,20 +128,19 @@ const AdminRooms = () => {
         {rooms.map((room) => (
           <Card key={room.id} className="bg-white border-[#e6dccb] shadow-sm overflow-hidden flex flex-col">
             <div className="relative h-48">
-              <img 
-                src={room.image} 
+              <img
+                src={room.image}
                 alt={room.name}
                 className="w-full h-full object-cover"
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=2070&auto=format&fit=crop';
                 }}
               />
-              <Badge 
-                className={`absolute top-3 right-3 ${
-                  room.available 
-                    ? 'bg-green-500/90 text-white' 
+              <Badge
+                className={`absolute top-3 right-3 ${room.available
+                    ? 'bg-green-500/90 text-white'
                     : 'bg-red-500/90 text-white'
-                }`}
+                  }`}
               >
                 {room.available ? 'Available' : 'Unavailable'}
               </Badge>
@@ -162,7 +162,7 @@ const AdminRooms = () => {
                 </div>
                 <p className="text-xl font-bold text-primary">GH₵ {room.price}<span className="text-sm font-normal text-[#6b7280]">/night</span></p>
               </div>
-              
+
               <div className="flex flex-wrap gap-1">
                 {room.amenities.slice(0, 3).map((amenity, idx) => (
                   <Badge key={idx} variant="outline" className="text-xs border-[#e6dccb] text-[#0b1f3a]">
@@ -184,7 +184,7 @@ const AdminRooms = () => {
                 </div>
               </div>
             </CardContent>
-            
+
             <div className="p-6 pt-0 mt-auto space-y-3">
               <div className="flex items-center justify-between pt-4 border-t border-[#efe6d7]">
                 <div className="flex items-center gap-2">
@@ -195,16 +195,16 @@ const AdminRooms = () => {
                   <span className="text-sm text-[#6b7280]">Active</span>
                 </div>
                 <div className="flex gap-2">
-                  <Button 
-                    variant="ghost" 
+                  <Button
+                    variant="ghost"
                     size="icon"
                     onClick={() => handleEditRoom(room)}
                     className="text-[#6b7280] hover:text-[#0b1f3a] hover:bg-[#f1eadf]"
                   >
                     <Edit className="w-4 h-4" />
                   </Button>
-                  <Button 
-                    variant="ghost" 
+                  <Button
+                    variant="ghost"
                     size="icon"
                     onClick={() => handleDeleteRoom(room.id)}
                     className="text-red-400 hover:text-red-300 hover:bg-red-500/10"
@@ -213,8 +213,8 @@ const AdminRooms = () => {
                   </Button>
                 </div>
               </div>
-              <Button 
-                variant="secondary" 
+              <Button
+                variant="secondary"
                 className="w-full bg-[#0b1f3a] hover:bg-[#143a63] text-white"
                 onClick={() => handleViewBookings(room)}
               >
@@ -235,7 +235,7 @@ const AdminRooms = () => {
               Manage customer bookings for this room type
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="flex-grow overflow-y-auto mt-4">
             {!selectedRoomBookings?.bookings.length ? (
               <div className="text-center py-12 text-[#6b7280]">
@@ -275,8 +275,8 @@ const AdminRooms = () => {
                       </TableCell>
                       <TableCell className="text-right">
                         {booking.status === 'pending' && (
-                          <Button 
-                            size="sm" 
+                          <Button
+                            size="sm"
                             className="bg-green-600 hover:bg-green-700 text-white h-8"
                             onClick={() => handleApproveBooking(booking.id)}
                           >

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useAuth, User } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { User } from '@/types/auth';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -31,7 +32,7 @@ const AdminCustomers = () => {
   const users = getAllUsers().filter(u => u.role === 'customer');
   const bookings = getAllBookings();
 
-  const filteredUsers = users.filter(user => 
+  const filteredUsers = users.filter(user =>
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -93,7 +94,7 @@ const AdminCustomers = () => {
                 filteredUsers.map((user) => {
                   const customerBookings = getCustomerBookings(user.id);
                   const totalSpent = getTotalSpent(user.id);
-                  
+
                   return (
                     <TableRow key={user.id} className="border-[#efe6d7] hover:bg-[#fbf8f2]">
                       <TableCell>
@@ -137,9 +138,9 @@ const AdminCustomers = () => {
                       <TableCell>
                         <Dialog>
                           <DialogTrigger asChild>
-                            <Button 
-                              size="icon" 
-                              variant="ghost" 
+                            <Button
+                              size="icon"
+                              variant="ghost"
                               className="h-8 w-8 text-[#6b7280] hover:text-[#0b1f3a]"
                               onClick={() => setSelectedCustomer(user)}
                             >
@@ -184,11 +185,11 @@ const AdminCustomers = () => {
                                         <div className="flex justify-between">
                                           <span>{booking.roomName}</span>
                                           <Badge className={
-                                            booking.status === 'confirmed' 
-                                              ? 'bg-green-500/20 text-green-400' 
+                                            booking.status === 'confirmed'
+                                              ? 'bg-green-500/20 text-green-400'
                                               : booking.status === 'cancelled'
-                                              ? 'bg-red-500/20 text-red-400'
-                                              : 'bg-yellow-500/20 text-yellow-400'
+                                                ? 'bg-red-500/20 text-red-400'
+                                                : 'bg-yellow-500/20 text-yellow-400'
                                           }>
                                             {booking.status}
                                           </Badge>

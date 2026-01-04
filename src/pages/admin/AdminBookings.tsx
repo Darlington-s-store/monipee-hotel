@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useAuth, Booking } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { Booking } from '@/types/auth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -42,14 +43,14 @@ const AdminBookings = () => {
   const bookings = getAllBookings();
 
   const filteredBookings = bookings.filter(booking => {
-    const matchesSearch = 
+    const matchesSearch =
       booking.guestDetails.firstName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       booking.guestDetails.lastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       booking.guestDetails.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
       booking.id.toLowerCase().includes(searchTerm.toLowerCase());
-    
+
     const matchesStatus = statusFilter === 'all' || booking.status === statusFilter;
-    
+
     return matchesSearch && matchesStatus;
   });
 
@@ -173,9 +174,9 @@ const AdminBookings = () => {
                       <div className="flex gap-1">
                         <Dialog>
                           <DialogTrigger asChild>
-                            <Button 
-                              size="icon" 
-                              variant="ghost" 
+                            <Button
+                              size="icon"
+                              variant="ghost"
                               className="h-8 w-8 text-[#6b7280] hover:text-[#0b1f3a]"
                               onClick={() => setSelectedBooking(booking)}
                             >
@@ -231,7 +232,7 @@ const AdminBookings = () => {
                                 </div>
                               )}
                               <div className="flex gap-2 pt-4">
-                                <Button 
+                                <Button
                                   className="flex-1 bg-green-600 hover:bg-green-700"
                                   onClick={() => handleStatusChange(booking.id, 'confirmed')}
                                   disabled={booking.status === 'confirmed'}
@@ -239,8 +240,8 @@ const AdminBookings = () => {
                                   <CheckCircle className="w-4 h-4 mr-2" />
                                   Confirm
                                 </Button>
-                                <Button 
-                                  variant="destructive" 
+                                <Button
+                                  variant="destructive"
                                   className="flex-1"
                                   onClick={() => handleStatusChange(booking.id, 'cancelled')}
                                   disabled={booking.status === 'cancelled'}
@@ -253,9 +254,9 @@ const AdminBookings = () => {
                           </DialogContent>
                         </Dialog>
                         {booking.status === 'pending' && (
-                          <Button 
-                            size="icon" 
-                            variant="ghost" 
+                          <Button
+                            size="icon"
+                            variant="ghost"
                             className="h-8 w-8 text-green-400 hover:text-green-300 hover:bg-green-500/20"
                             onClick={() => handleStatusChange(booking.id, 'confirmed')}
                           >

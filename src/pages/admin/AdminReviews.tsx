@@ -6,7 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Star, Trash2 } from 'lucide-react';
-import { useAuth, Review } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { Review } from '@/types/auth';
 
 const AdminReviews = () => {
   const { reviews, addReview, updateReview, deleteReview } = useAuth();
@@ -64,8 +65,8 @@ const AdminReviews = () => {
     return (
       <div className="flex gap-1">
         {[1, 2, 3, 4, 5].map((star) => (
-          <Star 
-            key={star} 
+          <Star
+            key={star}
             className={`w-4 h-4 ${star <= rating ? 'fill-yellow-400 text-yellow-400' : 'text-[#d1c4b3]'}`}
           />
         ))}
@@ -231,8 +232,8 @@ const AdminReviews = () => {
                 </div>
                 <div className="flex gap-2">
                   {review.status === 'pending' && (
-                    <Button 
-                      size="sm" 
+                    <Button
+                      size="sm"
                       onClick={() => handleStatusChange(review.id, 'published')}
                       className="bg-green-600 hover:bg-green-700"
                     >
@@ -240,8 +241,8 @@ const AdminReviews = () => {
                     </Button>
                   )}
                   {review.status === 'published' && (
-                    <Button 
-                      size="sm" 
+                    <Button
+                      size="sm"
                       variant="outline"
                       onClick={() => handleStatusChange(review.id, 'hidden')}
                       className="border-[#e6dccb] text-[#0b1f3a] hover:bg-[#f1eadf]"
@@ -250,8 +251,8 @@ const AdminReviews = () => {
                     </Button>
                   )}
                   {review.status === 'hidden' && (
-                    <Button 
-                      size="sm" 
+                    <Button
+                      size="sm"
                       variant="outline"
                       onClick={() => handleStatusChange(review.id, 'published')}
                       className="border-[#e6dccb] text-[#0b1f3a] hover:bg-[#f1eadf]"
@@ -259,8 +260,8 @@ const AdminReviews = () => {
                       Show
                     </Button>
                   )}
-                  <Button 
-                    size="icon" 
+                  <Button
+                    size="icon"
                     variant="ghost"
                     onClick={() => handleDelete(review.id)}
                     className="text-red-400 hover:text-red-300 hover:bg-red-500/20"

@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAuth, Room } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { Room } from '@/types/auth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -171,7 +172,7 @@ const EditRoom = () => {
     setIsSubmitting(true);
 
     const primaryImage = images.find(i => i.dataUrl)?.dataUrl || '/src/assets/room-standard.jpg';
-    
+
     const payload: Partial<Room> = {
       name: form.name,
       // type: form.type, // Usually we don't change type ID as it might break bookings, but let's allow it if user really wants, or maybe keep it readonly
@@ -196,7 +197,7 @@ const EditRoom = () => {
       toast({ title: 'Room Updated', description: 'Room details have been successfully updated.' });
       navigate('/admin/rooms');
     }
-    
+
     setIsSubmitting(false);
   };
 
@@ -305,9 +306,8 @@ const EditRoom = () => {
             }}
             onDragLeave={() => setIsDropping(false)}
             onDrop={handleDrop}
-            className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-              isDropping ? 'border-primary bg-primary/10' : 'border-[#efe6d7] bg-[#fbf8f2]'
-            }`}
+            className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${isDropping ? 'border-primary bg-primary/10' : 'border-[#efe6d7] bg-[#fbf8f2]'
+              }`}
           >
             <div className="flex flex-col items-center gap-2 text-[#374151]">
               <UploadCloud className="w-6 h-6 text-primary" />

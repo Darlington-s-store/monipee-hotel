@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useAuth, Message } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { Message } from '@/types/auth';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -42,7 +43,7 @@ const AdminMessages = () => {
   const filteredMessages = messages.filter(message => {
     const userName = getUserName(message.userId).toLowerCase();
     return userName.includes(searchTerm.toLowerCase()) ||
-           message.subject.toLowerCase().includes(searchTerm.toLowerCase());
+      message.subject.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   const handleMarkAsRead = (messageId: string) => {
@@ -121,11 +122,10 @@ const AdminMessages = () => {
       ) : (
         <div className="space-y-4">
           {filteredMessages.map((message) => (
-            <Card 
-              key={message.id} 
-              className={`bg-white border-[#e6dccb] shadow-sm cursor-pointer hover:bg-[#fbf8f2] transition-colors ${
-                message.status === 'unread' ? 'border-l-4 border-l-blue-500' : ''
-              }`}
+            <Card
+              key={message.id}
+              className={`bg-white border-[#e6dccb] shadow-sm cursor-pointer hover:bg-[#fbf8f2] transition-colors ${message.status === 'unread' ? 'border-l-4 border-l-blue-500' : ''
+                }`}
               onClick={() => {
                 setSelectedMessage(message);
                 setIsDialogOpen(true);
@@ -178,13 +178,12 @@ const AdminMessages = () => {
                   <div className="space-y-3">
                     <p className="text-sm font-medium text-[#0b1f3a]">Conversation:</p>
                     {selectedMessage.replies.map((reply, index) => (
-                      <div 
-                        key={index} 
-                        className={`p-3 rounded-lg ${
-                          reply.isAdmin 
-                            ? 'bg-primary/20 border-l-2 border-primary ml-4' 
+                      <div
+                        key={index}
+                        className={`p-3 rounded-lg ${reply.isAdmin
+                            ? 'bg-primary/20 border-l-2 border-primary ml-4'
                             : 'bg-[#fbf8f2] border border-[#efe6d7] mr-4'
-                        }`}
+                          }`}
                       >
                         <p className="text-sm text-[#111827]">{reply.content}</p>
                         <p className="text-xs text-[#6b7280] mt-1">
@@ -205,8 +204,8 @@ const AdminMessages = () => {
                     className="bg-[#fbf8f2] border-[#efe6d7] text-[#111827]"
                     rows={3}
                   />
-                  <Button 
-                    onClick={handleReply} 
+                  <Button
+                    onClick={handleReply}
                     className="w-full bg-primary hover:bg-primary/90"
                     disabled={!replyContent.trim()}
                   >

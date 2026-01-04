@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth, Room } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
+import { Room } from '@/types/auth';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -55,7 +56,7 @@ const AddRoom = () => {
     const draft = localStorage.getItem(DRAFT_KEY);
     if (draft) {
       const parsed = JSON.parse(draft);
-      setForm(parsed.form || form);
+      setForm((prev) => parsed.form || prev);
       setImages(parsed.images || []);
     }
   }, []);
