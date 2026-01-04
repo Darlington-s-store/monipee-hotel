@@ -147,7 +147,7 @@ const AddRoom = () => {
 
     setIsSubmitting(true);
 
-    const primaryImage = images.find(i => i.dataUrl)?.dataUrl || '/src/assets/room-standard.jpg';
+    const primaryImage = images.find(i => i.dataUrl)?.dataUrl || '/11.jpeg';
     const id = form.type ? slugify(form.type) : slugify(form.name);
 
     const payload: Room = {
@@ -279,9 +279,8 @@ const AddRoom = () => {
             }}
             onDragLeave={() => setIsDropping(false)}
             onDrop={handleDrop}
-            className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
-              isDropping ? 'border-primary bg-primary/10' : 'border-[#efe6d7] bg-[#fbf8f2]'
-            }`}
+            className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${isDropping ? 'border-primary bg-primary/10' : 'border-[#efe6d7] bg-[#fbf8f2]'
+              }`}
           >
             <div className="flex flex-col items-center gap-2 text-[#374151]">
               <UploadCloud className="w-6 h-6 text-primary" />

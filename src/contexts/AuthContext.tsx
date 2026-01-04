@@ -485,11 +485,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           capacity: 2,
           amenities: ['Free WiFi', 'Air Conditioning', 'TV', 'Private Bathroom'],
           description: 'Comfortable room with all essential amenities for a pleasant stay.',
-          image: '/src/assets/room-standard.jpg',
+          image: '/11.jpeg',
           available: true,
           size: '25m²',
           images: [
-            { name: 'room-standard.jpg', size: 0, type: 'image/jpeg', dataUrl: '/src/assets/room-standard.jpg' }
+            { name: '11.jpeg', size: 0, type: 'image/jpeg', dataUrl: '/11.jpeg' }
           ]
         },
         {
@@ -500,11 +500,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           capacity: 3,
           amenities: ['Free WiFi', 'Air Conditioning', 'Smart TV', 'Mini Bar', 'Balcony', 'Room Service'],
           description: 'Spacious room with premium amenities and city views.',
-          image: '/src/assets/room-deluxe.jpg',
+          image: '/14.jpeg',
           available: true,
           size: '35m²',
           images: [
-            { name: 'room-deluxe.jpg', size: 0, type: 'image/jpeg', dataUrl: '/src/assets/room-deluxe.jpg' }
+            { name: '14.jpeg', size: 0, type: 'image/jpeg', dataUrl: '/14.jpeg' }
           ]
         },
         {
@@ -515,11 +515,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           capacity: 4,
           amenities: ['Free WiFi', 'Air Conditioning', 'Smart TV', 'Mini Bar', 'Jacuzzi', 'Living Area', 'Butler Service'],
           description: 'Luxurious suite with separate living area and premium facilities.',
-          image: '/src/assets/room-suite.jpg',
+          image: '/16.jpeg',
           available: true,
           size: '55m²',
           images: [
-            { name: 'room-suite.jpg', size: 0, type: 'image/jpeg', dataUrl: '/src/assets/room-suite.jpg' }
+            { name: '16.jpeg', size: 0, type: 'image/jpeg', dataUrl: '/16.jpeg' }
           ]
         },
       ];
@@ -531,11 +531,39 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     // Initialize gallery images
     const storedGallery = localStorage.getItem(GALLERY_KEY);
-    if (storedGallery) {
-      setGalleryImages(JSON.parse(storedGallery));
+    let parsedGallery: GalleryImage[] = [];
+    try {
+      if (storedGallery) {
+        parsedGallery = JSON.parse(storedGallery);
+      }
+    } catch (error) {
+      console.error('Failed to parse gallery images:', error);
+    }
+
+    if (parsedGallery.length > 0) {
+      setGalleryImages(parsedGallery);
     } else {
-      setGalleryImages([]);
-      localStorage.setItem(GALLERY_KEY, JSON.stringify([]));
+      const defaultGallery: GalleryImage[] = [
+        { id: 'img-1', category: 'Rooms', src: '/11.jpeg', alt: 'Hotel Room' },
+        { id: 'img-2', category: 'Rooms', src: '/12.jpeg', alt: 'Comfortable Bed' },
+        { id: 'img-3', category: 'Rooms', src: '/13.jpeg', alt: 'Room Interior' },
+        { id: 'img-4', category: 'Rooms', src: '/14.jpeg', alt: 'Spacious Suite' },
+        { id: 'img-5', category: 'Rooms', src: '/15.jpeg', alt: 'Standard Room' },
+        { id: 'img-6', category: 'Rooms', src: '/16.jpeg', alt: 'Deluxe Room' },
+        { id: 'img-7', category: 'Exterior', src: '/17.jpeg', alt: 'Hotel Exterior Night View' },
+        { id: 'img-8', category: 'Exterior', src: '/18.jpeg', alt: 'Hotel Building' },
+        { id: 'img-9', category: 'Exterior', src: '/19.jpeg', alt: 'Entrance' },
+        { id: 'img-10', category: 'Exterior', src: '/20.jpeg', alt: 'Hotel Grounds' },
+        { id: 'img-11', category: 'Exterior', src: '/21.jpeg', alt: 'Outdoor View' },
+        { id: 'img-12', category: 'Amenities', src: '/22.jpeg', alt: 'Hotel Amenities' },
+        { id: 'img-13', category: 'Amenities', src: '/23.jpeg', alt: 'Facility View' },
+        { id: 'img-14', category: 'Dining', src: '/24.jpeg', alt: 'Restaurant Area' },
+        { id: 'img-15', category: 'Dining', src: '/25.jpeg', alt: 'Dining Hall' },
+        { id: 'img-16', category: 'Dining', src: '/26.jpeg', alt: 'Buffet Setup' },
+        { id: 'img-17', category: 'Exterior', src: '/Kegali-Hotel.jpg', alt: 'Kegali View' },
+      ];
+      setGalleryImages(defaultGallery);
+      localStorage.setItem(GALLERY_KEY, JSON.stringify(defaultGallery));
     }
 
     // Initialize reviews
@@ -591,7 +619,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     const users: Array<User & { password: string }> = JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
     const foundUser = users.find((u) => u.email === email && u.password === password);
-    
+
     if (!foundUser) {
       return { success: false, error: 'Invalid email or password' };
     }
@@ -604,7 +632,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const register = async (data: { email: string; password: string; name: string; phone?: string }): Promise<{ success: boolean; error?: string }> => {
     const users: Array<User & { password?: string }> = JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
-    
+
     if (users.find((u) => u.email === data.email)) {
       return { success: false, error: 'Email already registered' };
     }
@@ -638,7 +666,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const users: Array<User & { password?: string }> = JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
     const userIndex = users.findIndex((u) => u.id === user.id);
-    
+
     if (userIndex === -1) return { success: false, error: 'User not found' };
 
     users[userIndex] = { ...users[userIndex], ...data };
@@ -732,7 +760,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateRoom = (id: string, data: Partial<Room>) => {
-    const currentRooms = rooms.map(room => 
+    const currentRooms = rooms.map(room =>
       room.id === id ? { ...room, ...data } : room
     );
     setRooms(currentRooms);
