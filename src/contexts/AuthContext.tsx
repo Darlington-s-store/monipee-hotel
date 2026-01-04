@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import {
   User,
   Booking,
@@ -12,14 +12,8 @@ import {
   HotelSettings,
   AuthContextType
 } from '@/types/auth';
-
-
-
-
-
-
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+import { AuthContext } from './auth-setup';
+export { useAuth } from './auth-setup';
 
 const USERS_KEY = 'monipee_users';
 const CURRENT_USER_KEY = 'monipee_current_user';
@@ -863,10 +857,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 };
 
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
+
