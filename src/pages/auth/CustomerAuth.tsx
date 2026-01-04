@@ -158,6 +158,11 @@ const CustomerAuth = () => {
                   <Button type="submit" className="w-full btn-primary" disabled={isLoading}>
                     {isLoading ? 'Signing in...' : 'Sign In'}
                   </Button>
+                  <div className="text-center mt-4">
+                    <Link to="/auth/forgot-password" className="text-sm text-primary hover:underline">
+                      Forgot Password?
+                    </Link>
+                  </div>
                 </form>
               </TabsContent>
 

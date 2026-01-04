@@ -25,6 +25,8 @@ import NotFound from "./pages/NotFound";
 // Auth pages
 import CustomerAuth from "./pages/auth/CustomerAuth";
 import AdminLogin from "./pages/auth/AdminLogin";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import ResetPassword from "./pages/auth/ResetPassword";
 
 // Customer dashboard
 import CustomerLayout from "./components/dashboard/CustomerLayout";
@@ -72,11 +74,13 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/booking" element={<Booking />} />
-              
+
               {/* Auth Routes */}
               <Route path="/auth" element={<CustomerAuth />} />
+              <Route path="/auth/forgot-password" element={<ForgotPassword />} />
+              <Route path="/auth/reset-password" element={<ResetPassword />} />
               <Route path="/admin/login" element={<AdminLogin />} />
-              
+
               {/* Customer Dashboard */}
               <Route path="/dashboard" element={<CustomerLayout />}>
                 <Route index element={<DashboardHome />} />
@@ -84,7 +88,7 @@ const App = () => (
                 <Route path="profile" element={<Profile />} />
                 <Route path="messages" element={<Messages />} />
               </Route>
-              
+
               {/* Admin Dashboard */}
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminDashboard />} />
@@ -101,7 +105,7 @@ const App = () => (
                 <Route path="room-reviews" element={<AdminRoomReviews />} />
                 <Route path="settings" element={<AdminSettings />} />
               </Route>
-              
+
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

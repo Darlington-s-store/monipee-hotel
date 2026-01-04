@@ -71,6 +71,10 @@ interface AuthContextType {
   // Settings
   settings: HotelSettings;
   updateSettings: (data: Partial<HotelSettings>) => void;
+
+  // Password Reset
+  forgotPassword: (email: string) => Promise<{ success: boolean; message: string }>;
+  resetPassword: (password: string, token: string, email: string) => Promise<{ success: boolean; message: string }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -577,6 +581,68 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return { success: true };
   };
 
+  const forgotPassword = async (email: string): Promise<{ success: boolean; message: string }> => {
+    const users: Array<User & { password?: string }> = JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
+    const userExists = users.find(u => u.email === email);
+
+    // Always return success to prevent email enumeration, but log for dev purposes
+    if (userExists) {
+      // Create a mock token
+      const resetToken = Math.random().toString(36).substring(2, 15);
+      const resetLink = `/auth/reset-password?token=${resetToken}&email=${email}`;
+
+      // Store token with expiration (simulated in localStorage)
+      const resets = JSON.parse(localStorage.getItem('monipee_resets') || '{}');
+      resets[email] = { token: resetToken, expires: Date.now() + 3600000 }; // 1 hour
+      localStorage.setItem('monipee_resets', JSON.stringify(resets));
+
+      console.log(`[DEV MODE] Password Reset Link: ${window.location.origin}${resetLink}`);
+    } else {
+      console.log('[DEV MODE] Password reset requested for non-existent email');
+    }
+
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    return {
+      success: true,
+      message: 'If an account exists with this email, password reset instructions have been sent.'
+    };
+  };
+
+  const resetPassword = async (password: string, token: string, email: string): Promise<{ success: boolean; message: string }> => {
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    const resets = JSON.parse(localStorage.getItem('monipee_resets') || '{}');
+    const resetData = resets[email];
+
+    if (!resetData || resetData.token !== token) {
+      return { success: false, message: 'Invalid or expired reset token.' };
+    }
+
+    if (Date.now() > resetData.expires) {
+      return { success: false, message: 'Reset token has expired.' };
+    }
+
+    const users: Array<User & { password?: string }> = JSON.parse(localStorage.getItem(USERS_KEY) || '[]');
+    const userIndex = users.findIndex(u => u.email === email);
+
+    if (userIndex === -1) {
+      return { success: false, message: 'User not found.' };
+    }
+
+    // Update password
+    users[userIndex].password = password;
+    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+
+    // Clear used token
+    delete resets[email];
+    localStorage.setItem('monipee_resets', JSON.stringify(resets));
+
+    return { success: true, message: 'Password successfully updated.' };
+  };
+
   // Booking functions
   const getBookings = (): Booking[] => {
     if (!user) return [];
@@ -847,6 +913,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       updatePageContent,
       settings,
       updateSettings,
+      forgotPassword,
+      resetPassword,
     }}>
       {children}
     </AuthContext.Provider>
